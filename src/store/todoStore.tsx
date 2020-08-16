@@ -10,33 +10,37 @@ const initialState: Todo[] = [
 		id: Math.random(),
 		title: 'Learn MobX',
     completed: false,
-    urgent: true
+    urgent: true,
+    dueDate: "2020-08-21"
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Practise with React-Toolkit',
     completed: true,
-    urgent: false
+    urgent: false,
+    dueDate: "9999-99-99"
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Figure out why it doesnt get deleted',
     completed: true,
-    urgent: true
+    urgent: true,
+    dueDate: "2020-08-17"
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Practise with MobX-Map',
     completed: false,
-    urgent: true
+    urgent: false,
+    dueDate: "9999-99-99"
 	},
 ];
 
 class TodoStore {
-	@observable todos: Todo[] = [];
+	@observable todos: Todo[] = initialState;
 	@observable selectedTodo?: Todo;
 
   @action loadTodos = async () => {
@@ -48,13 +52,14 @@ class TodoStore {
     })
   }
 
-  @action addTodo = ({ title, urgent }: { title: string, urgent: boolean }) => {
+  @action addTodo = ({ title, urgent, dueDate }: { title: string, urgent: boolean, dueDate: string }) => {
     const newTodo: Todo = {
       userId: 1,
       id: this.generateId(),
       title,
       completed: false,
-      urgent
+      urgent,
+      dueDate
     }
 
     this.todos.push(newTodo);
@@ -92,6 +97,10 @@ class TodoStore {
 
   @computed get getUnfinishedTodoCount(): number{
     return this.todos.filter(todo => todo.completed === false).length;
+  }
+
+  @computed get getUnfinishedUrgentTodoCount(): number{
+    return this.todos.filter(todo => !todo.completed && todo.urgent).length;
   }
 
 	private generateId = (): number => {

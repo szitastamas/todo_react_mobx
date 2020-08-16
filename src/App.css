@@ -66,14 +66,30 @@
   padding: 0 2rem;
 }
 
+.form-container h4{
+  text-align: center;
+}
+
 #todo-form{
   display: flex;
   flex-direction: column;
   max-width: 75%;
   margin: auto;
+  padding: 2.5rem 1rem;
+  border: 1px solid rgb(151, 151, 151);
+  border-radius: 5px;
 }
 
 #todo-form input{
   margin: 1rem 0;
   padding: .3rem;
+}
+
+button{
+  background: white;
+  outline: none;
+  border: .5px solid black;
+  padding: .4rem .7rem;
+  cursor: pointer;
+  margin-top: 1rem;
 }

@@ -8,10 +8,10 @@ function App() {
 
   const store = useContext(todoStore);
 
-  useEffect(() => {
-    store.loadTodos();
-  }, [store])
-  
+  // useEffect(() => {
+  //   store.loadTodos();
+  // }, [store])
+
   return (
     <div className="container">
       <TodoList />

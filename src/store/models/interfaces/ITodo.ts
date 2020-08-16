@@ -3,5 +3,6 @@ export default interface ITodo {
   id: number,
   title: string,
   completed: boolean,
-  urgent: boolean
+  urgent: boolean,
+  dueDate: string
 }
