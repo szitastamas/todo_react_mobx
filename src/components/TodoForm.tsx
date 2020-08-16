@@ -2,11 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import todoStore from '../store/todoStore';
-import ITodo from '../store/models/interfaces/ITodo';
+import ITodo from '../store/models/interfaces/Todo/ITodo';
 import CustomInput from './utility/CustomInput';
 
 const TodoForm = () => {
-	const { getUnfinishedTodoCount, getUnfinishedUrgentTodoCount, selectedTodo, addTodo, editTodo, deselect } = useContext(todoStore);
+  const { getUnfinishedTodoCount, getUnfinishedUrgentTodoCount, selectedTodo, addTodo, editTodo, deselect } = useContext(todoStore);
 
   const [title, setTitle] = useState('');
   const [urgent, setUrgent] = useState(false);
@@ -32,15 +32,25 @@ const TodoForm = () => {
       return;
     }
 
+    isEditState ? handleEditTodo() : handleAddTodo();
+
+    resetForm();
+  }
+
+  const handleAddTodo = () => {
+    addTodo({ title, urgent, dueDate })
+  }
+
+  const handleEditTodo = () => {
+
     const editedTodo: ITodo = {
       ...selectedTodo!,
       title,
       urgent,
       dueDate
     }
-    isEditState ? editTodo(editedTodo) : addTodo({ title, urgent, dueDate });
 
-    resetForm();
+    editTodo(editedTodo)
   }
 
   const resetForm = () => {

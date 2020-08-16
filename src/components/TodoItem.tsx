@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Todo from '../store/models/interfaces/ITodo';
+import Todo from '../store/models/interfaces/Todo/ITodo';
 import { observer } from 'mobx-react-lite';
 
 import todoStore from '../store/todoStore';

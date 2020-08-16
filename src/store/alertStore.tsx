@@ -1,9 +1,9 @@
-import { createContext } from "react";
 import { observable, action, runInAction } from 'mobx';
 
-import IAlert from "./models/interfaces/IAlert";
+import IAlert from "./models/interfaces/Alert/IAlert";
+import IAlertStore from "./models/interfaces/Alert/IAlertStore";
 
-class AlertStore {
+class AlertStore implements IAlertStore {
   @observable alerts: IAlert[] = [];
 
   @action addAlert = (alert : IAlert) => {
@@ -15,11 +15,11 @@ class AlertStore {
     }, alert.duration)
   }
 
-  private removeAlert = (id: number) => {
+  removeAlert = (id: number) => {
     const index = this.alerts.findIndex(alert => alert.id === id);
     if(index === -1) return;
     this.alerts.splice(index, 1);
   }
 }
 
-export default createContext(new AlertStore());
+export default new AlertStore();

@@ -1,8 +1,11 @@
 import { createContext } from 'react';
 import { observable, action, computed, runInAction } from 'mobx';
 
-import Todo from './models/interfaces/ITodo';
-import ITodo from './models/interfaces/ITodo';
+import Todo from './models/interfaces/Todo/ITodo';
+import ITodo from './models/interfaces/Todo/ITodo';
+import alertStore from './alertStore';
+import IAlertStore from './models/interfaces/Alert/IAlertStore';
+import ITodoStore from './models/interfaces/Todo/ITodoStore';
 
 const initialState: Todo[] = [
 	{
@@ -39,7 +42,14 @@ const initialState: Todo[] = [
 	},
 ];
 
-class TodoStore {
+class TodoStore implements ITodoStore {
+
+  public alertStore: IAlertStore;
+
+  constructor(alertStore: IAlertStore){
+    this.alertStore = alertStore;
+  }
+
 	@observable todos: Todo[] = initialState;
 	@observable selectedTodo?: Todo;
 
@@ -62,6 +72,13 @@ class TodoStore {
       dueDate
     }
 
+    this.alertStore.addAlert({
+      id: Math.random(),
+      text: `${title} added.`,
+      type: "success",
+      duration: 3000
+    })
+    
     this.todos.push(newTodo);
   }
 
@@ -76,6 +93,13 @@ class TodoStore {
     
     if(index === -1 || !this.selectedTodo) return;
 
+    this.alertStore.addAlert({
+      id: Math.random(),
+      text: `${editedTodo.title} updated.`,
+      type: "success",
+      duration: 3000
+    })
+
     this.todos.splice(index, 1, editedTodo);
   }
 
@@ -83,6 +107,12 @@ class TodoStore {
     const index = this.todos.findIndex(todo => todo.id === id);
     if(index === -1) return;
     this.todos.splice(index, 1);
+    this.alertStore.addAlert({
+      id: Math.random(),
+      text: `Todo deleted.`,
+      type: "success",
+      duration: 3000
+    })
   }
 
   @action selectTodo = (id: number) => {
@@ -108,4 +138,4 @@ class TodoStore {
 	};
 }
 
-export default createContext(new TodoStore());
+export default createContext(new TodoStore(alertStore));

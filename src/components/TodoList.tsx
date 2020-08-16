@@ -31,7 +31,7 @@ const TodoList = () => {
 						<th>Actions</th>
 					</tr>
 				</thead>
-				<tbody>{renderTodoRows()}</tbody>
+				<tbody>{ renderTodoRows() }</tbody>
 			</table>
 		</Fragment>
 	);

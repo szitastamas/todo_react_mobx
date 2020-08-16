@@ -1,4 +1,9 @@
+body{
+  min-height: 100vh;
+}
+
 .container{
+  height: 100%;
   max-width: 80%;
   margin: auto;
   display: flex;
@@ -92,4 +97,52 @@ button{
   padding: .4rem .7rem;
   cursor: pointer;
   margin-top: 1rem;
+}
+
+.alert{
+  min-width: 200px;
+  padding: .8rem 2rem;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  transform: translate(-50%, 60px);
+  left: 50%;
+  opacity: 0;
+  animation: slideUp 3000ms ease-in-out forwards;
+  font-weight: bold;
+}
+
+.alert.warning{
+  background: rgb(223, 208, 0);
+}
+
+.alert.success{
+  background: green;
+  color: white;
+}
+
+.alert.error{
+  background: red;
+  color: white;
+}
+
+@keyframes slideUp{
+  30%{
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  85%{
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  100%{
+    transform: translate(-50%, 60px);
+    opacity: .5;
+  }
 }
