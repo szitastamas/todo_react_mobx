@@ -1,32 +1,37 @@
 import { createContext } from 'react';
 import { observable, action, computed, runInAction } from 'mobx';
 
-import Todo from './models/interfaces/Todo';
+import Todo from './models/interfaces/ITodo';
+import ITodo from './models/interfaces/ITodo';
 
 const initialState: Todo[] = [
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Learn MobX',
-		completed: false,
+    completed: false,
+    urgent: true
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Practise with React-Toolkit',
-		completed: true,
+    completed: true,
+    urgent: false
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Figure out why it doesnt get deleted',
-		completed: true,
+    completed: true,
+    urgent: true
 	},
 	{
 		userId: 1,
 		id: Math.random(),
 		title: 'Practise with MobX-Map',
-		completed: false,
+    completed: false,
+    urgent: true
 	},
 ];
 
@@ -43,12 +48,13 @@ class TodoStore {
     })
   }
 
-  @action addTodo = (title: string) => {
+  @action addTodo = ({ title, urgent }: { title: string, urgent: boolean }) => {
     const newTodo: Todo = {
       userId: 1,
       id: this.generateId(),
       title,
-      completed: false
+      completed: false,
+      urgent
     }
 
     this.todos.push(newTodo);
@@ -60,17 +66,10 @@ class TodoStore {
     todo.completed = !todo.completed;
   }
 
-  @action editTodo = (title: string) => {
-    const index = this.todos.findIndex(todo => todo.id === this.selectedTodo!.id);
+  @action editTodo = (editedTodo: ITodo) => {
+    const index = this.todos.findIndex(todo => todo.id === editedTodo.id);
     
     if(index === -1 || !this.selectedTodo) return;
-
-    const editedTodo = {
-      userId: this.selectedTodo.userId,
-      id: this.selectedTodo.id,
-      title,
-      completed: this.selectedTodo.completed
-    }
 
     this.todos.splice(index, 1, editedTodo);
   }

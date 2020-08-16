@@ -25,6 +25,10 @@
   text-align: center;
 }
 
+.todo-item.urgent{
+  background: rgba(255, 255, 0, 0.267);
+}
+
 .todo-title{
   cursor: pointer;
   font-weight: bold;
