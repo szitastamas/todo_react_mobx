@@ -1,0 +1,75 @@
+.container{
+  max-width: 80%;
+  margin: auto;
+  display: flex;
+  padding: 2rem 0;
+}
+
+.todo-table{
+  border-collapse: collapse;
+  border: 1px grey solid;
+  text-align: center;
+  flex: 2;
+}
+
+.todo-table thead{
+  background: whitesmoke;
+}
+
+.todo-table tr td,
+.todo-table tr th{
+  padding: .6rem 1.2rem;
+}
+
+.todo-item{
+  text-align: center;
+}
+
+.todo-title{
+  cursor: pointer;
+  font-weight: bold;
+  transition: 100ms background ease-out;
+}
+
+.todo-title.selected{
+  background: rgba(0,0,0,0.1)
+}
+
+.todo-title:hover{
+  background: rgba(0,0,0,0.1)
+}
+
+.todo-item .status{
+  color: red;
+  cursor: pointer;
+  transition: 100ms all ease-out;
+}
+
+.todo-item .status:hover{
+  background: rgba(255, 0, 0, 0.219);
+}
+
+.todo-item .status.completed{
+  color: green;
+}
+
+.todo-item .status.completed:hover{
+  background: rgba(0, 128, 0, 0.315);
+}
+
+.form-container{
+  flex: 1;
+  padding: 0 2rem;
+}
+
+#todo-form{
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+  margin: auto;
+}
+
+#todo-form input{
+  margin: 1rem 0;
+  padding: .3rem;
+}
