@@ -1,7 +1,7 @@
 import { createContext } from 'react';
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, runInAction } from 'mobx';
 
-import Todo from './models/Todo';
+import Todo from './models/interfaces/Todo';
 
 const initialState: Todo[] = [
 	{
@@ -31,9 +31,17 @@ const initialState: Todo[] = [
 ];
 
 class TodoStore {
-	@observable todos: Todo[] = initialState;
+	@observable todos: Todo[] = [];
 	@observable selectedTodo?: Todo;
 
+  @action loadTodos = async () => {
+    const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const data = await res.json();
+
+    runInAction(() => {
+      this.todos = data.slice(0, 15);
+    })
+  }
 
   @action addTodo = (title: string) => {
     const newTodo: Todo = {

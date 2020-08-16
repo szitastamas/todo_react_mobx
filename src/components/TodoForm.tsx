@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import todoStore from '../store/todoStore';
 
 const TodoForm = () => {
-	const { getUnfinishedTodoCount, selectedTodo, addTodo, editTodo, selectTodo, deselect } = useContext(todoStore);
+	const { getUnfinishedTodoCount, selectedTodo, addTodo, editTodo, deselect } = useContext(todoStore);
 
 	const [title, setTitle] = useState('');
 	const [isEditState, setIsEditState] = useState(false);
@@ -25,6 +25,10 @@ const TodoForm = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if(title.replace(/ /g, "").length === 0){
+      return;
+    }
 
     isEditState ? editTodo(title) : addTodo(title);
 
