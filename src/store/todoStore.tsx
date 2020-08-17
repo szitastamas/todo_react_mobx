@@ -48,9 +48,10 @@ class TodoStore implements ITodoStore {
 
   constructor(alertStore: IAlertStore){
     this.alertStore = alertStore;
+    initialState.forEach((todo: ITodo) => this.todoRepository.set(todo.id, todo))
   }
 
-	@observable todos: Todo[] = initialState;
+  @observable todoRepository = new Map<number, ITodo>();
 	@observable selectedTodo?: Todo;
 
   @action loadTodos = async () => {
@@ -58,8 +59,12 @@ class TodoStore implements ITodoStore {
     const data = await res.json();
 
     runInAction(() => {
-      this.todos = data.slice(0, 15);
+      data.slice(0, 15).forEach((todo: ITodo) => this.todoRepository.set(todo.id, todo));
     })
+  }
+
+  @computed get todos() {
+    return [...this.todoRepository.values()]
   }
 
   @action addTodo = ({ title, urgent, dueDate }: { title: string, urgent: boolean, dueDate: string }) => {
@@ -79,19 +84,17 @@ class TodoStore implements ITodoStore {
       duration: 3000
     })
     
-    this.todos.push(newTodo);
+    this.todoRepository.set(newTodo.id, newTodo);
   }
 
   @action toggleCompleted = (id: number) => {
-    const todo = this.todos.find(todo => todo.id === id);
+    const todo = this.todoRepository.get(id);
     if(!todo) return;
     todo.completed = !todo.completed;
   }
 
   @action editTodo = (editedTodo: ITodo) => {
-    const index = this.todos.findIndex(todo => todo.id === editedTodo.id);
-    
-    if(index === -1 || !this.selectedTodo) return;
+    this.todoRepository.set(editedTodo.id, editedTodo);
 
     this.alertStore.addAlert({
       id: Math.random(),
@@ -99,14 +102,11 @@ class TodoStore implements ITodoStore {
       type: "success",
       duration: 3000
     })
-
-    this.todos.splice(index, 1, editedTodo);
   }
 
   @action deleteTodo = (id: number) => {
-    const index = this.todos.findIndex(todo => todo.id === id);
-    if(index === -1) return;
-    this.todos.splice(index, 1);
+    this.todoRepository.delete(id);
+
     this.alertStore.addAlert({
       id: Math.random(),
       text: `Todo deleted.`,
@@ -116,7 +116,7 @@ class TodoStore implements ITodoStore {
   }
 
   @action selectTodo = (id: number) => {
-    const selected = this.todos.find(todo => todo.id === id);
+    const selected = this.todoRepository.get(id)
     if(!selected) return;
     this.selectedTodo = selected;
   }
@@ -126,7 +126,7 @@ class TodoStore implements ITodoStore {
   }
 
   @computed get getUnfinishedTodoCount(): number{
-    return this.todos.filter(todo => todo.completed === false).length;
+    return this.todos.filter(todo => !todo.completed).length;
   }
 
   @computed get getUnfinishedUrgentTodoCount(): number{

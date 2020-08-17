@@ -3,7 +3,7 @@ import IAlertStore from "../Alert/IAlertStore";
 
 export default interface ITodoStore {
   alertStore: IAlertStore,
-  todos: ITodo[],
+  todoRepository: Map<number, ITodo>,
   selectedTodo?: ITodo,
   loadTodos: () => void,
   addTodo: (todo: ITodo) => void,
